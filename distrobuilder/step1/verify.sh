@@ -1,4 +1,3 @@
 #!/bin/bash
 
-echo 'well done!'
-stat /root/my-new-file
+file /root/rootfs.squashfs && tar xf /root/lxd.tar.xz && grep 'step1' /root/metadata.yaml

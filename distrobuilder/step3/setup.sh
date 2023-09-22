@@ -1,5 +1,7 @@
+rm -r /root/*
 cat <<EOF > /root/step3.yaml
 image:
+  description: step3
   distribution: ubuntu
   release: jammy
   architecture: x86_64

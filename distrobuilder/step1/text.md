@@ -1,23 +1,5 @@
 
-Create a new empty file called `my-new-file` in your home directory
-
-<br>
-
-### Solution
-First we make sure we're in our home directory using
-
-```plain
-cd ~
-```{{exec}}
-
-We can list the current directory using
-
-```plain
-pwd
-```{{exec}}
-
-Now we create the file
-
-```plain
-touch my-new-file
-```{{exec}}
+Correct any errors in `step1.yaml` so that it builds with this command:
+```
+distrobuilder build-lxd step1.yaml
+```

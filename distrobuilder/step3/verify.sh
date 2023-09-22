@@ -1,3 +1,3 @@
 #!/bin/bash
 
-if stat /var/dont-need-this.png; then exit 1; fi
+file /root/disk.qcow2 && tar xf /root/lxd.tar.xz && grep 'step3' /root/metadata.yaml

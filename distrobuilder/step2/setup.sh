@@ -1,5 +1,7 @@
+rm -r /root/*
 cat <<EOF > /root/step2.yaml
 image:
+  description: step2
   distribution: ubuntu
   release: jammy
   architecture: x86_64

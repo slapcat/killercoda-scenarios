@@ -1,5 +1,6 @@
 cat <<EOF > /root/step1.yaml
 image:
+  description: step1
   distribution: ubuntu
   release: jammy
   architecture: x86_64

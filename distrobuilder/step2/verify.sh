@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cat /etc/my-second-file | grep amazing
+file /root/rootfs.squashfs && tar xf /root/lxd.tar.xz && grep 'step2' /root/metadata.yaml
