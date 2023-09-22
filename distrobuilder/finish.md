@@ -1,6 +1,4 @@
 
-<br>
+### Congratulations!
 
-### Look at you, learning Linux!
-
-You solved this challenge!
+You completed this scenario.

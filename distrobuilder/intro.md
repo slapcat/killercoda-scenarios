@@ -1,1 +1,1 @@
-Learn some basic commands to work with files on a Linux system
+This tutorial will walk you through resolving common issues when using distrobuilder.

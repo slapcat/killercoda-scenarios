@@ -4,22 +4,26 @@
   "details": {
     "intro": {
       "text": "intro.md",
-      "foreground": "setup.sh"
+      "foreground": "setup_fg.sh",
+      "background": "setup_bg.sh"
     },
     "steps": [
       {
-        "title": "Fix config1.yaml",
+        "title": "Build the step1.yaml Container",
         "text": "step1/text.md",
+        "background": "step1/setup.sh",
         "verify": "step1/verify.sh"
       },
       {
-        "title": "Create a file with text",
+        "title": "Build the step2.yaml Container",
         "text": "step2/text.md",
+        "background": "step2/setup.sh",
         "verify": "step2/verify.sh"
       },
       {
-        "title": "Import to LXD",
+        "title": "Build the step3.yaml VM",
         "text": "step3/text.md",
+        "background": "step3/setup.sh",
         "verify": "step3/verify.sh"
       }
     ],
