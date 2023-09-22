@@ -1,14 +1,14 @@
 {
-  "title": "Linux Files Intro",
-  "description": "Let's learn some basic commands to work with files on a Linux system",
+  "title": "Distrobuilder Troubleshooting",
+  "description": "Learning how to troubleshoot Distrobuilder.",
   "details": {
     "intro": {
       "text": "intro.md",
-      "background": "setup.sh"
+      "foreground": "setup.sh"
     },
     "steps": [
       {
-        "title": "Create an empty file",
+        "title": "Fix config1.yaml",
         "text": "step1/text.md",
         "verify": "step1/verify.sh"
       },
@@ -18,7 +18,7 @@
         "verify": "step2/verify.sh"
       },
       {
-        "title": "Delete a file",
+        "title": "Import to LXD",
         "text": "step3/text.md",
         "verify": "step3/verify.sh"
       }

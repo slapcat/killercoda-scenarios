@@ -1,4 +1,4 @@
-snap install lxd
-lxd init --minimal
+unlink /root/filesystem
 snap install distrobuilder --classic
-touch config1.yaml
+touch /root/config1.yaml
+echo '=== Environment Setup Complete ==='
