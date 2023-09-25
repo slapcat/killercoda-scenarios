@@ -9,21 +9,18 @@
     },
     "steps": [
       {
-        "title": "Build the step1.yaml Container",
+        "title": "Build a Basic Container Image",
         "text": "step1/text.md",
-        "background": "step1/setup.sh",
         "verify": "step1/verify.sh"
       },
       {
-        "title": "Build the step2.yaml Container",
+        "title": "Build a Cloud Image",
         "text": "step2/text.md",
-        "background": "step2/setup.sh",
         "verify": "step2/verify.sh"
       },
       {
-        "title": "Build the step3.yaml VM",
+        "title": "Build a VM",
         "text": "step3/text.md",
-        "background": "step3/setup.sh",
         "verify": "step3/verify.sh"
       }
     ],
