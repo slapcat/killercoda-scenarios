@@ -43,7 +43,6 @@ targets:
         lxc.arch = {{ image.architecture_personality }}
   lxd:
     vm:
-      # Size in GiB
       size: 25
       filesystem: ext4
 
