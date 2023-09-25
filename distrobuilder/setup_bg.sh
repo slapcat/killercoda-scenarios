@@ -1,4 +1,4 @@
-apt install debootstrap qemu-utils
+apt install -y qemu-utils
 unlink /root/filesystem
 
 cat <<EOF > /root/config.yaml
@@ -15,13 +15,6 @@ source:
 
 packages:
   manager: apk
-
-actions:
-  - trigger: post-files
-    action:
-      #!/bin/sh
-
-      touch /done
 
 targets:
   lxc:
@@ -53,6 +46,14 @@ targets:
       # Size in GiB
       size: 25
       filesystem: ext4
+
+actions:
+  - trigger: post-files
+    action: |-
+      #!/bin/sh
+      grep '127.0.0.1' /etc/host
+    variants:
+    - cloud
 
 files:
 - path: /etc/hostname
@@ -114,14 +115,6 @@ files:
     # Stuff to do before rebooting
     ::shutdown:/sbin/openrc shutdown
 
-- path: /hello.sh
-  generator: dump
-  content:
-    #!/bin/bash
-    echo 'hello world!'
-  variants:
-  - cloud
-
 - path: /etc/inittab
   generator: template
   name: inittab
@@ -139,6 +132,8 @@ files:
 
     # Stuff to do before rebooting
     ::shutdown:/sbin/openrc shutdown
+  types:
+  - vm
 
 - name: meta-data
   generator: cloud-init
