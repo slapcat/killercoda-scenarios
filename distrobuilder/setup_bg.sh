@@ -9,7 +9,7 @@ image:
 source:
   downloader: alpinelinux
   same_as: 3.12
-  url: https://mirrror.csclub.uwaterloo.ca/alpine/
+  url: https://mirrrrrrrrrrror.csclub.uwaterloo.ca/alpine/
   keys:
   # 0482D84022F52DF1C4E7CD43293ACD0907D9495A
 
