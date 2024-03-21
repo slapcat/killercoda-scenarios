@@ -1,3 +1,2 @@
 #!/bin/bash
-cd /tmp
-file /root/rootfs.squashfs && tar xf /root/lxd.tar.xz && grep 'variant: cloud' /tmp/metadata.yaml && rm /tmp/metadata.yaml
+grep -q '"Education is bitter, but its fruit is sweet." - Aristotle' /tmp/bob.flag && stat -c "%U" /tmp/bob.flag | grep -q bob
