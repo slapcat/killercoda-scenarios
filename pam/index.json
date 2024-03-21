@@ -22,11 +22,6 @@
         "title": "Help Carol change her password",
         "text": "step3/text.md",
         "verify": "step3/verify.sh"
-      },
-      {
-        "title": "Help Diego SSH into the server",
-        "text": "step4/text.md",
-        "verify": "step4/verify.sh"
       }
     ],
     "finish": {
