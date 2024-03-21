@@ -7,6 +7,7 @@ rm `which sudo` `which apt` `which su`
 
 # configure user-specific mounts
 sed -i 's@</pam_mount>@<luserconf name=".pam_mount.conf.xml" /></pam_mount>@' /etc/security/pam_mount.conf.xml
+echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
 
 # add users
 useradd alice -p UqMv0m/vEZaYM -s /bin/bash -m
