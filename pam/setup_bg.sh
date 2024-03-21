@@ -1,3 +1,10 @@
+# package management
+apt update
+apt install -y libpam-mount libpam-sss
+DEBIAN_FRONTEND=noninteractive pam-auth-update --force
+unlink /root/filesystem
+rm `which sudo` `which apt` `which su`
+
 # configure user-specific mounts
 sed -i 's@</pam_mount>@<luserconf name=".pam_mount.conf.xml" /></pam_mount>@' /etc/security/pam_mount.conf.xml
 
@@ -6,7 +13,6 @@ useradd alice -p UqMv0m/vEZaYM -s /bin/bash -m
 useradd bob -p kLGvLX79uepxo -s /bin/bash -m
 
 # update PAM files
-DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 sed -i 's/success=2/success=1/' /etc/pam.d/common-auth
 cat <<EOF >> /etc/pam.d/common-auth
 auth	optional	pam_mount.so
@@ -37,6 +43,4 @@ cat <<EOF > /home/bob/.pam_mount.conf.xml
 EOF
 chown bob:bob /home/bob/.pam_mount.conf.xml
 
-# package management
-unlink /root/filesystem
-rm `which sudo` `which apt` `which su`
+touch /tmp/finished

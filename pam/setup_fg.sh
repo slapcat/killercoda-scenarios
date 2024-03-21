@@ -1,2 +1,3 @@
-apt update
-apt install -y libpam-mount libpam-sss
+echo "Installing scenario..."
+while [ ! -f /tmp/finished ]; do sleep 1; done
+echo 'DONE!'
