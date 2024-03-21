@@ -1,0 +1,39 @@
+{
+  "title": "PAM Troubleshooting",
+  "description": "Learning how to troubleshoot PAM.",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "foreground": "setup_fg.sh",
+      "background": "setup_bg.sh"
+    },
+    "steps": [
+      {
+        "title": "Help Alice login",
+        "text": "step1/text.md",
+        "verify": "step1/verify.sh"
+      },
+      {
+        "title": "Help Bob with his automount",
+        "text": "step2/text.md",
+        "verify": "step2/verify.sh"
+      },
+      {
+        "title": "Help Carol change her password",
+        "text": "step3/text.md",
+        "verify": "step3/verify.sh"
+      },
+      {
+        "title": "Help Diego SSH into the server",
+        "text": "step4/text.md",
+        "verify": "step4/verify.sh"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "ubuntu"
+  }
+}
