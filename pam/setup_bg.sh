@@ -1,5 +1,4 @@
 # package management
-echo "Installing scenario..."
 apt update
 apt install -y libpam-mount libpam-sss
 DEBIAN_FRONTEND=noninteractive pam-auth-update --force
@@ -33,12 +32,11 @@ umount /mnt
 cryptsetup luksClose ev
 
 # add bob's automount file
-cat <<EOF > /opt/bob/.pam_mount.conf.xml
+cat <<EOF > /home/bob/.pam_mount.conf.xml
 <pam_mount>
 <volume user="bob" fstype="crypt" path="/opt/bob-encrypted.img" mountpoint="/root/private" options="nodev,nosuid" />
 </pam_mount>
 EOF
-chown bob:bob /opt/bob/.pam_mount.conf.xml
+chown bob:bob /home/bob/.pam_mount.conf.xml
 
 touch /tmp/finished
-echo "Done!"
