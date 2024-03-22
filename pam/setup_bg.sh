@@ -1,3 +1,5 @@
+set -x
+
 # package management
 apt update
 apt install -y libpam-mount libpam-sss
