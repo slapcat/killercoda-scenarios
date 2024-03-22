@@ -3,23 +3,44 @@ apt update
 apt install -y libpam-mount libpam-sss
 DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 unlink /root/filesystem
-rm `which sudo` `which apt` `which su`
 
 # configure user-specific mounts
 sed -i 's@</pam_mount>@<luserconf name=".pam_mount.conf.xml" /></pam_mount>@' /etc/security/pam_mount.conf.xml
-echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
 
 # add users
 useradd alice -p UqMv0m/vEZaYM -s /bin/bash -m
 useradd bob -p kLGvLX79uepxo -s /bin/bash -m
+useradd carol -p kWZWXO3IoO2jI -s /bin/bash -m
+useradd diego -p YJwEpT5wG6Nwo -s /bin/bash -m
 
-# update PAM files
+# update PAM files and relevant configs
+cat <<EOF > /etc/security/faillock.conf
+deny=1
+unlock_time=0
+audit
+EOF
+cat <<EOF > /etc/ssh/sshd_config
+UsePAM yes
+PasswordAuthentication yes
+PermitRootLogin yes
+EOF
+rm /etc/ssh/sshd_config.d/50-cloud-init.conf
+systemctl restart sshd
+echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
 sed -i 's/success=2/success=1/' /etc/pam.d/common-auth
+sed -Ei 's/@include common-auth/auth    required pam_faillock.so preauth\nauth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [default=die] pam_faillock.so authfail\nauth    sufficient pam_faillock.so authsucc\naccount    required pam_faillock.so/' /etc/pam.d/sshd
+
+
+# create failures
+tmux new-session -d bash
+tmux send -t 0:0 "login diego" C-m
+sleep 2
+tmux send -t 0:0 C-m
+tmux send -t 0:0 "su - carol" C-m
 
 # add alice's flag
 echo '"The only true wisdom is in knowing you know nothing." - Socrates' > /home/alice/alice.flag
 chown alice:alice /home/alice/alice.flag
-chmod 750 -R /home/alice
 
 # setup encrypted volume
 truncate -s 100M /opt/bob-encrypted.img
@@ -40,4 +61,13 @@ cat <<EOF > /home/bob/.pam_mount.conf.xml
 EOF
 chown bob:bob /home/bob/.pam_mount.conf.xml
 
+# carol
+echo 'carol            hard    maxlogins            1' >> /etc/security/limits.conf
+echo '"The highest activity a human being can attain is learning for understanding, because to understand is to be free." - Baruch Spinoza' > /home/carol/carol.flag'
+
+# diego
+echo '"Life is not a problem to be solved, but a reality to be experienced." - Soren Kierkegeaard' >> /home/diego/.profile
+
+chmod 750 -R /home/*
+rm `which sudo` `which apt` `which su`
 touch /tmp/finished
