@@ -33,10 +33,13 @@ sed -i 's/nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other/*/' 
 
 # create failures
 tmux new-session -d bash
-tmux send -t 0:0 "login diego" C-m
-sleep 2
-tmux send -t 0:0 C-m
-tmux send -t 0:0 "su - carol" C-m
+tmux split-window -h bash
+tmux send -t 0:0.0 "ssh diego@localhost" C-m
+tmux send -t 0:0.1 "login carol" C-m
+sleep 1
+tmux send -t 0:0.0 C-m
+tmux send -t 0:0.1 "carol" C-m
+tmux send -t 0:0.1 C-m
 
 # add alice's flag
 echo '"The only true wisdom is in knowing you know nothing." - Socrates' > /home/alice/alice.flag
@@ -50,13 +53,14 @@ echo -n "bob" | cryptsetup luksOpen /opt/bob-encrypted.img ev -
 mkfs.ext4 /dev/mapper/ev
 mount /dev/mapper/ev /mnt
 echo '"Education is bitter, but its fruit is sweet." - Aristotle' > /mnt/bob.flag
+chown -R bob:bob /mnt
 umount /mnt
 cryptsetup luksClose ev
 
 # add bob's automount file
 cat <<EOF > /home/bob/.pam_mount.conf.xml
 <pam_mount>
-<volume user="bob" fstype="crypt" path="/opt/bob-encrypted.img" mountpoint="/root/private" options="nodev,nosuid,username=bob" />
+<volume user="bob" fstype="crypt" path="/opt/bob-encrypted.img" mountpoint="/root/private" options="nodev,nosuid,user=bob" />
 </pam_mount>
 EOF
 chown bob:bob /home/bob/.pam_mount.conf.xml
@@ -66,7 +70,7 @@ echo 'carol            hard    maxlogins            1' >> /etc/security/limits.c
 echo '"The highest activity a human being can attain is learning for understanding, because to understand is to be free." - Baruch Spinoza' > /home/carol/carol.flag'
 
 # diego
-echo '"Life is not a problem to be solved, but a reality to be experienced." - Soren Kierkegeaard' >> /home/diego/.profile
+echo "echo 'Quote of the Day: \"Life is not a problem to be solved, but a reality to be experienced.\" - Soren Kierkegeaard'" >> /home/diego/.profile
 
 chmod 750 /home/*
 touch /tmp/finished
