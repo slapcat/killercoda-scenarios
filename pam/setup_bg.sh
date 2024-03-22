@@ -72,6 +72,4 @@ echo '"The highest activity a human being can attain is learning for understandi
 # diego
 echo "echo 'Quote of the Day: \"Life is not a problem to be solved, but a reality to be experienced.\" - Soren Kierkegeaard'" >> /home/diego/.profile
 
-chmod 750 /home/*
 touch /tmp/finished
-rm `which sudo` `which apt` `which su`
