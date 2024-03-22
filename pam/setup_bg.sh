@@ -29,7 +29,7 @@ systemctl restart sshd
 echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
 sed -i 's/success=2/success=1/' /etc/pam.d/common-auth
 sed -Ei 's/@include common-auth/auth    required pam_faillock.so preauth\nauth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [default=die] pam_faillock.so authfail\nauth    sufficient pam_faillock.so authsucc\naccount    required pam_faillock.so/' /etc/pam.d/sshd
-
+sed -i 's/nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other/*/' /etc/security/pam_mount.conf.xml
 
 # create failures
 tmux new-session -d bash
@@ -56,7 +56,7 @@ cryptsetup luksClose ev
 # add bob's automount file
 cat <<EOF > /home/bob/.pam_mount.conf.xml
 <pam_mount>
-<volume user="bob" fstype="crypt" path="/opt/bob-encrypted.img" mountpoint="/root/private" options="nodev,nosuid" />
+<volume user="bob" fstype="crypt" path="/opt/bob-encrypted.img" mountpoint="/root/private" options="nodev,nosuid,username=bob" />
 </pam_mount>
 EOF
 chown bob:bob /home/bob/.pam_mount.conf.xml
@@ -68,6 +68,6 @@ echo '"The highest activity a human being can attain is learning for understandi
 # diego
 echo '"Life is not a problem to be solved, but a reality to be experienced." - Soren Kierkegeaard' >> /home/diego/.profile
 
-chmod 750 -R /home/*
-rm `which sudo` `which apt` `which su`
+chmod 750 /home/*
 touch /tmp/finished
+rm `which sudo` `which apt` `which su`
