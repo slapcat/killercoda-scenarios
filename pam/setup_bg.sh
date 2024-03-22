@@ -13,6 +13,17 @@ useradd bob -p kLGvLX79uepxo -s /bin/bash -m
 useradd carol -p kWZWXO3IoO2jI -s /bin/bash -m
 useradd diego -p YJwEpT5wG6Nwo -s /bin/bash -m
 
+# create failures
+tmux new-session -d bash
+tmux split-window -h bash
+tmux send -t 0:0.0 "ssh diego@localhost" C-m
+tmux send -t 0:0.1 "login carol" C-m
+sleep 1
+tmux send -t 0:0.0 C-m
+tmux send -t 0:0.1 "carol" C-m
+sleep 1
+tmux send -t 0:0.1 C-m
+
 # update PAM files and relevant configs
 cat <<EOF > /etc/security/faillock.conf
 deny=1
@@ -64,14 +75,3 @@ echo '"The highest activity a human being can attain is learning for understandi
 echo "echo 'Quote of the Day: \"Life is not a problem to be solved, but a reality to be experienced.\" - Soren Kierkegeaard'" >> /home/diego/.profile
 
 touch /tmp/finished
-
-# create failures
-tmux new-session -d bash
-tmux split-window -h bash
-tmux send -t 0:0.0 "ssh diego@localhost" C-m
-tmux send -t 0:0.1 "login carol" C-m
-sleep 1
-tmux send -t 0:0.0 C-m
-tmux send -t 0:0.1 "carol" C-m
-sleep 1
-tmux send -t 0:0.1 C-m
