@@ -27,7 +27,6 @@ EOF
 rm /etc/ssh/sshd_config.d/50-cloud-init.conf
 systemctl restart sshd
 echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
-sed -i 's/success=2/success=1/' /etc/pam.d/common-auth
 sed -Ei 's/@include common-auth/auth    required pam_faillock.so preauth\nauth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [default=die] pam_faillock.so authfail\nauth    sufficient pam_faillock.so authsucc\naccount    required pam_faillock.so/' /etc/pam.d/sshd
 sed -i 's/nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other/*/' /etc/security/pam_mount.conf.xml
 
@@ -42,6 +41,7 @@ tmux send -t 0:0.1 "carol" C-m
 tmux send -t 0:0.1 C-m
 
 # add alice's flag
+sed -i 's/success=2/success=1/' /etc/pam.d/common-auth
 echo '"The only true wisdom is in knowing you know nothing." - Socrates' > /home/alice/alice.flag
 chown alice:alice /home/alice/alice.flag
 
@@ -67,7 +67,7 @@ chown bob:bob /home/bob/.pam_mount.conf.xml
 
 # carol
 echo 'carol            hard    maxlogins            1' >> /etc/security/limits.conf
-echo '"The highest activity a human being can attain is learning for understanding, because to understand is to be free." - Baruch Spinoza' > /home/carol/carol.flag'
+echo '"The highest activity a human being can attain is learning for understanding, because to understand is to be free." - Baruch Spinoza' > /home/carol/carol.flag
 
 # diego
 echo "echo 'Quote of the Day: \"Life is not a problem to be solved, but a reality to be experienced.\" - Soren Kierkegeaard'" >> /home/diego/.profile
