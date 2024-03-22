@@ -30,16 +30,7 @@ echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
 sed -Ei 's/^auth.*success=1 default=ignore.*$/auth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [success=1 default=ignore]      pam_localuser.so use_first_pass/' /etc/pam.d/common-auth
 sed -Ei 's/@include common-auth/auth    required pam_faillock.so preauth\nauth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [default=die] pam_faillock.so authfail\nauth    sufficient pam_faillock.so authsucc\naccount    required pam_faillock.so/' /etc/pam.d/sshd
 sed -i 's/nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other/*/' /etc/security/pam_mount.conf.xml
-
-# create failures
-tmux new-session -d bash
-tmux split-window -h bash
-tmux send -t 0:0.0 "ssh diego@localhost" C-m
-tmux send -t 0:0.1 "login carol" C-m
-sleep 1
-tmux send -t 0:0.0 C-m
-tmux send -t 0:0.1 "carol" C-m
-tmux send -t 0:0.1 C-m
+sed -i 's/enable="1"/enable="0"/' /etc/security/pam_mount.conf.xml
 
 # add alice's flag
 echo '"The only true wisdom is in knowing you know nothing." - Socrates' > /home/alice/alice.flag
@@ -73,3 +64,14 @@ echo '"The highest activity a human being can attain is learning for understandi
 echo "echo 'Quote of the Day: \"Life is not a problem to be solved, but a reality to be experienced.\" - Soren Kierkegeaard'" >> /home/diego/.profile
 
 touch /tmp/finished
+
+# create failures
+tmux new-session -d bash
+tmux split-window -h bash
+tmux send -t 0:0.0 "ssh diego@localhost" C-m
+tmux send -t 0:0.1 "login carol" C-m
+sleep 1
+tmux send -t 0:0.0 C-m
+tmux send -t 0:0.1 "carol" C-m
+sleep 1
+tmux send -t 0:0.1 C-m
