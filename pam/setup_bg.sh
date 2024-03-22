@@ -1,8 +1,6 @@
-set -x
-
 # package management
 apt update
-apt install -y libpam-mount libpam-sss
+apt install -y libpam-mount
 DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 unlink /root/filesystem
 
@@ -29,6 +27,7 @@ EOF
 rm /etc/ssh/sshd_config.d/50-cloud-init.conf
 systemctl restart sshd
 echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
+sed -Ei 's/auth    [success=1 default=ignore]      pam_unix.so nullok/auth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [success=1 default=ignore]      pam_sss.so use_first_pass/' /etc/pam.d/common-auth
 sed -Ei 's/@include common-auth/auth    required pam_faillock.so preauth\nauth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [default=die] pam_faillock.so authfail\nauth    sufficient pam_faillock.so authsucc\naccount    required pam_faillock.so/' /etc/pam.d/sshd
 sed -i 's/nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other/*/' /etc/security/pam_mount.conf.xml
 
@@ -43,7 +42,6 @@ tmux send -t 0:0.1 "carol" C-m
 tmux send -t 0:0.1 C-m
 
 # add alice's flag
-sed -i 's/success=2/success=1/' /etc/pam.d/common-auth
 echo '"The only true wisdom is in knowing you know nothing." - Socrates' > /home/alice/alice.flag
 chown alice:alice /home/alice/alice.flag
 
