@@ -13,18 +13,7 @@ useradd bob -p kLGvLX79uepxo -s /bin/bash -m
 useradd carol -p kWZWXO3IoO2jI -s /bin/bash -m
 useradd diego -p YJwEpT5wG6Nwo -s /bin/bash -m
 
-# create failures
-tmux new-session -d bash
-tmux split-window -h bash
-tmux send -t 0:0.0 "ssh diego@localhost" C-m
-tmux send -t 0:0.1 "login carol" C-m
-sleep 1
-tmux send -t 0:0.0 C-m
-tmux send -t 0:0.1 "carol" C-m
-sleep 1
-tmux send -t 0:0.1 C-m
-
-# update PAM files and relevant configs
+# set service configs
 cat <<EOF > /etc/security/faillock.conf
 deny=1
 unlock_time=0
@@ -37,15 +26,30 @@ PermitRootLogin yes
 EOF
 rm /etc/ssh/sshd_config.d/50-cloud-init.conf
 systemctl restart sshd
+
+# login carol
+tmux new-session -d bash
+tmux split-window -h bash
+tmux send -t 0:0.1 "login carol" C-m
+sleep 1
+tmux send -t 0:0.1 "carol" C-m
+sleep 1
+tmux send -t 0:0.1 C-m
+
+# PAM config
 echo 'session	optional	pam_mount.so' >> /etc/pam.d/common-auth
 sed -Ei 's/^auth.*success=1 default=ignore.*$/auth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [success=1 default=ignore]      pam_localuser.so use_first_pass/' /etc/pam.d/common-auth
 sed -Ei 's/@include common-auth/auth    required pam_faillock.so preauth\nauth    [success=1 default=ignore]      pam_unix.so nullok\nauth    [default=die] pam_faillock.so authfail\nauth    sufficient pam_faillock.so authsucc\naccount    required pam_faillock.so/' /etc/pam.d/sshd
 sed -i 's/nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other/*/' /etc/security/pam_mount.conf.xml
 sed -i 's/enable="1"/enable="0"/' /etc/security/pam_mount.conf.xml
 
+# login diego
+tmux send -t 0:0.0 "ssh diego@localhost" C-m
+sleep 1
+tmux send -t 0:0.0 C-m
+
 # add alice's flag
 echo '"The only true wisdom is in knowing you know nothing." - Socrates' > /home/alice/alice.flag
-chown alice:alice /home/alice/alice.flag
 
 # setup encrypted volume
 truncate -s 100M /opt/bob-encrypted.img
