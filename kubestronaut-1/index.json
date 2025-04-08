@@ -1,0 +1,24 @@
+{
+  "title": "Kubestronaut Flight School",
+  "description": "Week 1 Lab.",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "foreground": "setup_fg.sh",
+      "background": "setup_bg.sh"
+    },
+    "steps": [
+      {
+        "title": "Question 1",
+        "text": "question.md",
+        "verify": "verify.sh"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "kubernetes-kubeadm-1node"
+  }
+}
