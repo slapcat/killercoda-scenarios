@@ -1,3 +1,4 @@
-echo -e '\n\n\nInstalling scenario...\n'
+echo -e '\n\n\n==== Installing scenario...\n\n'
 while [ ! -f /tmp/finished ]; do sleep 1; done
-echo -e '\n\nDone! You may proceed with the lab.'
+clear
+echo -e '\n\n==== Done! You may proceed with the lab.\n\n'
